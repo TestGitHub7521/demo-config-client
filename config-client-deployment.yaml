@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: config-client
+spec:
+  selector:
+    app: config-client
+  ports:
+  - protocol: TCP
+    port: 8086
+    
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-client
+spec:
+  selector:
+      matchLabels:
+        app: config-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: config-client
+    spec:
+      containers:
+        - name: config-client
+          image: config-client:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8086
